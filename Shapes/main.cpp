@@ -10,21 +10,8 @@
 #include "CollisionDetection\CollisionDetection.h"
 #define MAX_LOADSTRING 100
 
-HWND mHWND;
-
 Field mField;
-void drawCircle(int16_t x, int16_t y, int16_t r) {
 
-	HDC hdc = GetDC(mHWND);
-
-	SelectObject(hdc, GetStockObject(DC_BRUSH));
-	
-	SetDCBrushColor(hdc, RGB(255, 0, 0));
-	BOOL rs = Ellipse(hdc, x-r , y-r,
-		x+r, y+r);
-
-	ReleaseDC(mHWND, hdc);
-}
 
 // Variabili globali:
 HINSTANCE hInst;                                // istanza corrente
@@ -46,11 +33,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
 
-	/*if (AllocConsole()) {
-		freopen("CONOUT$", "w", stdout);
-		SetConsoleTitle("Debug Console");
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_RED);
-	}*/
 
 	// TODO: inserire qui il codice.
 
@@ -148,7 +130,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	HDC hdc;          // handle to device context (DC)  
 	PAINTSTRUCT ps;   // paint data for Begin/EndPaint  
-	mHWND = hwnd;
+
 	switch (uMsg)
 	{
 	case WM_COMMAND: {
@@ -180,25 +162,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		EndPaint(hwnd, &ps);
 		break;
 	}
-
-				   /*case WM_SIZE:
-
-					   // Convert the client coordinates of the client area
-					   // rectangle to screen coordinates and save them in a
-					   // rectangle. The rectangle is passed to the ClipCursor
-					   // function during WM_LBUTTONDOWN processing.
-
-					   GetClientRect(hwnd, &rcClient);
-					   ptClientUL.x = rcClient.left;
-					   ptClientUL.y = rcClient.top;
-					   ptClientLR.x = rcClient.right;
-					   ptClientLR.y = rcClient.bottom;
-					   ClientToScreen(hwnd, &ptClientUL);
-					   ClientToScreen(hwnd, &ptClientLR);
-					   SetRect(&rcClient, ptClientUL.x, ptClientUL.y,
-						   ptClientLR.x, ptClientLR.y);
-					   return 0;
-					   */
 	case WM_LBUTTONDOWN: {
 
 		short xPos = GET_X_LPARAM(lParam);
@@ -215,9 +178,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			for (size_t i = 0; i < pPolyList.size(); ++i)
 			{
 				LogDebug("Iterazione sul %d-esimo poligono", i);
-				float overlap = 0;
-				Vector2D pMTV;
-				bool pCollisionDetected = collision_detection::detectCollision(pPoly, pPolyList.at(i),overlap,pMTV);
+				
+				bool pCollisionDetected = collision_detection::detectCollision(pPoly, pPolyList.at(i));
 				if (pCollisionDetected) {					
 					LogDebug("Collisione rilevata");
 					pScale -= 0.1;

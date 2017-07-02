@@ -5,7 +5,11 @@
 *.slo
 *.lo
 *.o
+*.log
 *.obj
+*.pdb
+*.ilk
+*.ipch
 
 # Precompiled Headers
 *.gch
@@ -30,5 +34,6 @@
 *.exe
 *.out
 *.app
-
-.vs*/
+/.vs
+/Shapes/x64/Debug/Shapes.tlog
+/.vs

@@ -11,6 +11,6 @@ public:
 	float getRadius()const;
 
 private:
-	
+	void calcluateVertices();
 	float mRadius;
 };

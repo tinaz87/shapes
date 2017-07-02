@@ -30,8 +30,9 @@ void PolyRectangle::calcluateVertices() {
 	this->addPoint(this->mBottomRight);
 	this->addPoint(Vector2D(this->mBottomRight.mXCoordinate, this->mTopLeft.mYCoordinate));
 
-
 }
+
+
 void PolyRectangle::setPivotPoint(const int16_t iCenterX, const int16_t iCenterY) {
 
 	this->mCenter.mXCoordinate = iCenterX;
