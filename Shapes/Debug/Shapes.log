@@ -1,0 +1,8 @@
+﻿  CollisioneDetection.cpp
+c:\users\tinaz\documents\visual studio 2017\projects\shapes\shapes\collisiondetection\collisionedetection.cpp(41): warning C4018: '<': signed/unsigned mismatch
+c:\users\tinaz\documents\visual studio 2017\projects\shapes\shapes\collisiondetection\collisionedetection.cpp(62): warning C4018: '<': signed/unsigned mismatch
+c:\users\tinaz\documents\visual studio 2017\projects\shapes\shapes\collisiondetection\collisionedetection.cpp(82): warning C4018: '<': signed/unsigned mismatch
+c:\users\tinaz\documents\visual studio 2017\projects\shapes\shapes\collisiondetection\collisionedetection.cpp(136): warning C4018: '<': signed/unsigned mismatch
+c:\users\tinaz\documents\visual studio 2017\projects\shapes\shapes\collisiondetection\collisionedetection.cpp(192): warning C4244: 'argument': conversion from 'float' to 'int16_t', possible loss of data
+  Shapes.vcxproj -> C:\Users\tinaz\documents\visual studio 2017\Projects\Shapes\Debug\Shapes.exe
+  Shapes.vcxproj -> C:\Users\tinaz\documents\visual studio 2017\Projects\Shapes\Debug\Shapes.pdb (Partial PDB)
