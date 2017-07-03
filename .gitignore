@@ -8,11 +8,14 @@
 *.tlog
 *.log
 *.obj
+*.iobj
 *.idp
 *.pdb
 *.lastbuildstate
 *.ilk
 *.ipch
+*.suo
+*.user
 
 # Precompiled Headers
 *.gch
