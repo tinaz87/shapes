@@ -11,12 +11,30 @@
 // File di intestazione di Windows:
 #include <windows.h>
 
-// File di intestazione Runtime C
+
+
+
+
+
 #include <stdlib.h>
-#include <malloc.h>
+//#include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
 #include "Logger\Logger.h"
+#include "Config\Configuration.h"
+
+
+#ifdef _DEBUG
+
+#define _CRTDBG_MAP_ALLOC 
+#include <crtdbg.h>  
+
+#ifndef DBG_NEW 
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ ) 
+#define new DBG_NEW 
+#endif
+
+#endif // DEBUG
 
 using namespace logger;
 

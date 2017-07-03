@@ -5,15 +5,19 @@
 *.slo
 *.lo
 *.o
+*.tlog
 *.log
 *.obj
+*.idp
 *.pdb
+*.lastbuildstate
 *.ilk
 *.ipch
 
 # Precompiled Headers
 *.gch
 *.pch
+*.ipdb
 
 # Compiled Dynamic libraries
 *.so
@@ -31,9 +35,6 @@
 *.lib
 
 # Executables
-*.exe
 *.out
 *.app
-/.vs
-/Shapes/x64/Debug/Shapes.tlog
 /.vs

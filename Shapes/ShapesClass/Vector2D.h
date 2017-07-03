@@ -11,7 +11,7 @@ public:
 	float mXCoordinate;
 	float mYCoordinate;
 
-	POINT getPoint();
+	POINT getPoint()const;
 
 	Vector2D operator+(const Vector2D& iOther)const;
 	Vector2D operator-(const Vector2D& iOther)const;

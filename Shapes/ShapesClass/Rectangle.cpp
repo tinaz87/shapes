@@ -5,11 +5,7 @@
 PolyRectangle::PolyRectangle() {
 	this->mPolygonType = RECTANGLE;
 }
-PolyRectangle::PolyRectangle(const Vector2D& iTopLeft, const Vector2D& iBottomRight) {
-	this->mBottomRight = iBottomRight;
-	this->mTopLeft = iTopLeft;
-	this->mPolygonType = RECTANGLE;
-}
+
 PolyRectangle::~PolyRectangle() {}
 
 void PolyRectangle::calcluateVertices() {
@@ -39,9 +35,9 @@ void PolyRectangle::setPivotPoint(const int16_t iCenterX, const int16_t iCenterY
 	this->mCenter.mYCoordinate = iCenterY;
 
 
-	this->mWidth = BasePolygon::MIN_POINT_DISTANCE + rand() % BasePolygon::MAX_POINT_DISTANCE;
+	this->mWidth = Configs::MIN_WIDTH_HEIGHT + rand() % Configs::MAX_WIDTH_HEIGHT;
 	this->mWidth = min(iCenterX, this->mWidth);
-	this->mHeight = BasePolygon::MIN_POINT_DISTANCE + rand() % BasePolygon::MAX_POINT_DISTANCE;
+	this->mHeight = Configs::MIN_WIDTH_HEIGHT + rand() % Configs::MAX_WIDTH_HEIGHT;
 	this->mHeight =  min(iCenterY, this->mHeight);
 
 	this->calcluateVertices();

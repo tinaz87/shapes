@@ -23,7 +23,7 @@
     <ProjectGuid>{84FF902A-B8F3-4DFB-BC79-1665AD5F13CE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Shapes</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionDetection\CollisionDetection.h" />
+    <ClInclude Include="Config\Configuration.h" />
     <ClInclude Include="Field\Field.h" />
     <ClInclude Include="Logger\Logger.h" />
     <ClInclude Include="Resource.h" />
@@ -146,6 +147,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="ShapesClass\Circle.h" />
     <ClInclude Include="ShapesClass\Color.h" />
+    <ClInclude Include="ShapesClass\Triangle.h" />
     <ClInclude Include="ShapesClass\Vector2D.h" />
     <ClInclude Include="ShapesClass\Polygon.h" />
     <ClInclude Include="ShapesClass\Rectangle.h" />
@@ -154,12 +156,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollisionDetection\CollisioneDetection.cpp" />
+    <ClCompile Include="Config\Configuration.cpp" />
     <ClCompile Include="Field\Field.cpp" />
     <ClCompile Include="Logger\Logger.cpp" />
     <ClCompile Include="ShapeBuilder\ShapeBuilder.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ShapesClass\Circle.cpp" />
     <ClCompile Include="ShapesClass\Color.cpp" />
+    <ClCompile Include="ShapesClass\Triangle.cpp" />
     <ClCompile Include="ShapesClass\Vector2D.cpp" />
     <ClCompile Include="ShapesClass\Polygon.cpp" />
     <ClCompile Include="ShapesClass\Rectangle.cpp" />

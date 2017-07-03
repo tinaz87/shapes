@@ -8,6 +8,8 @@
 #include "Field\Field.h"
 #include "ShapeBuilder\ShapeBuilder.h"
 #include "CollisionDetection\CollisionDetection.h"
+#include <time.h>
+
 #define MAX_LOADSTRING 100
 
 Field mField;
@@ -32,9 +34,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	//_CrtSetBreakAlloc();
 
 
-	// TODO: inserire qui il codice.
+	srand(time(NULL));
 
 	// Inizializzare le stringhe globali
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -60,6 +64,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			DispatchMessage(&msg);
 		}
 	}
+
+
+	mField.cleanField();
+
+	_CrtDumpMemoryLeaks();
 
 	return (int)msg.wParam;
 }
@@ -116,8 +125,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	tagRECT pRect;
 	GetClientRect(hWnd, &pRect);
 
-	mField.setHeight(pRect.bottom);
-	mField.setWidth(pRect.right);
+	
+
+	mField.setHeight(static_cast<int16_t>(pRect.bottom) );
+	mField.setWidth(static_cast<int16_t>(pRect.right) );
 
 
 	ShowWindow(hWnd, nCmdShow);
@@ -128,8 +139,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	HDC hdc;          // handle to device context (DC)  
-	PAINTSTRUCT ps;   // paint data for Begin/EndPaint  
+	HDC pDeviceHandleContext;          // handle to device context (DC)  
+	PAINTSTRUCT pPaintSt;   // paint data for Begin/EndPaint  
 
 	switch (uMsg)
 	{
@@ -139,7 +150,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		switch (wmId)
 		{
 		case IDM_ABOUT:
-			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hwnd, About);
+			//DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hwnd, About);
 			break;
 		case IDM_EXIT:
 			DestroyWindow(hwnd);
@@ -151,23 +162,23 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	}
 	case WM_PAINT: {
-		BeginPaint(hwnd, &ps);
+		BeginPaint(hwnd, &pPaintSt);
 
 		// Because the default brush is white, select  
 		// a different brush into the device context  
 		// to demonstrate the painting of filled shapes.  
 
-		SelectObject(ps.hdc, GetStockObject(GRAY_BRUSH));
+		SelectObject(pPaintSt.hdc, GetStockObject(GRAY_BRUSH));
 
-		EndPaint(hwnd, &ps);
+		EndPaint(hwnd, &pPaintSt);
 		break;
 	}
 	case WM_LBUTTONDOWN: {
 
 		short xPos = GET_X_LPARAM(lParam);
 		short yPos = GET_Y_LPARAM(lParam);
-		char buffer[100];
-		LogDebug( "Click => X:%d,Y:%d", xPos, yPos);
+
+		LogDebug("Click coordinate X:%d,Y:%d", xPos, yPos);
 
 		BasePolygon* pPoly = shape_builder::createPolygon(xPos, yPos);
 
@@ -177,60 +188,81 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			float pScale = 1.f;
 			for (size_t i = 0; i < pPolyList.size(); ++i)
 			{
-				LogDebug("Iterazione sul %d-esimo poligono", i);
-				
+				//LogDebug("Iterazione sul %d-esimo poligono", i);
+
 				bool pCollisionDetected = collision_detection::detectCollision(pPoly, pPolyList.at(i));
-				if (pCollisionDetected) {					
-					LogDebug("Collisione rilevata");
-					pScale -= 0.1;
+				if (pCollisionDetected) {
+					LogDebug("Collisione rilevata con l' %d-esimo poligono", i+1);
+					pScale -= 0.1f;
 					if (pScale > 0) {
-						LogDebug("Riduzione scala oggetto a %f",pScale);						
+						LogDebug("Riduzione scala oggetto a %f", pScale);
 						i = i - 1;
 						pPoly->Scale(pScale);
+						pPoly->getEdgesNormal(true);
 					}
 					else {
 						delete pPoly;
 						return 0;
 					}
-					
+
 				}
 			}
 
 			mField.addPoly(pPoly);
 
-			hdc = GetDC(hwnd);
+			pDeviceHandleContext = GetDC(hwnd);
 
-			SelectObject(hdc, GetStockObject(DC_BRUSH));
+			SelectObject(pDeviceHandleContext, GetStockObject(DC_BRUSH));
 			const Color& pPolyColor = pPoly->getColor();
-			SetDCBrushColor(hdc, RGB(pPolyColor.mRed, pPolyColor.mGreen, pPolyColor.mBlue));
+			SetDCBrushColor(pDeviceHandleContext, RGB(pPolyColor.mRed, pPolyColor.mGreen, pPolyColor.mBlue));
 			switch (pPoly->getType())
 			{
 			case BasePolygon::RECTANGLE: {
 				const auto& pPointLeft = pPoly->getTopLeft();
 				const auto& pPointRight = pPoly->getBottomRight();
 
-				BOOL r = Rectangle(hdc, pPointLeft.mXCoordinate, pPointLeft.mYCoordinate,
-					pPointRight.mXCoordinate, pPointRight.mYCoordinate);
+				if (!Rectangle(pDeviceHandleContext, static_cast<int>(pPointLeft.mXCoordinate), static_cast<int>(pPointLeft.mYCoordinate),
+					static_cast<int>(pPointRight.mXCoordinate), static_cast<int>(pPointRight.mYCoordinate))) {
+					LogDebug("Si è verificato un errore nella funzione Rectangle");
+				}
 				break;
 			}
 			case BasePolygon::CIRCLE: {
 				const auto& pPointLeft = pPoly->getTopLeft();
 				const auto& pPointRight = pPoly->getBottomRight();
 
-				BOOL r = Ellipse(hdc, pPointLeft.mXCoordinate, pPointLeft.mYCoordinate,
-					pPointRight.mXCoordinate, pPointRight.mYCoordinate);
+				if (!Ellipse(pDeviceHandleContext, static_cast<int>(pPointLeft.mXCoordinate), static_cast<int>(pPointLeft.mYCoordinate),
+					static_cast<int>(pPointRight.mXCoordinate), static_cast<int>(pPointRight.mYCoordinate))) {
+					LogDebug("Si è verificato un errore nella funzione Ellipse");
+				}
 				break;
 			}
-			default:
+			default: {
+				const auto& pPointList = pPoly->getPointList();
+				POINT* pPoints = new POINT[pPointList.size()];
+
+				for (size_t idx = 0; idx < pPointList.size(); ++idx) {
+					pPoints[idx] = pPointList[idx].getPoint();
+				}
+
+				int pPolyPointCount = 3;
+
+				if (!PolyPolygon(pDeviceHandleContext, pPoints, &pPolyPointCount, 1)) {
+					LogDebug("Si è verificato un errore nella funzione PolyPolygon");
+				}
+				delete[] pPoints;
+
 				break;
 			}
 
-			ReleaseDC(hwnd, hdc);
+			}
+
+			ReleaseDC(hwnd, pDeviceHandleContext);
 
 		}
 
 
-		
+
 
 		return 0;
 	}

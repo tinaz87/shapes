@@ -28,6 +28,9 @@
     <Filter Include="Logger">
       <UniqueIdentifier>{b45c0586-e16b-4780-a623-3e89a65e76db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Configuration">
+      <UniqueIdentifier>{be0c7b53-cbed-418f-804f-90a6891dd1bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -72,6 +75,12 @@
     <ClInclude Include="Logger\Logger.h">
       <Filter>Logger</Filter>
     </ClInclude>
+    <ClInclude Include="ShapesClass\Triangle.h">
+      <Filter>ShapesClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Config\Configuration.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -106,6 +115,12 @@
     </ClCompile>
     <ClCompile Include="Logger\Logger.cpp">
       <Filter>Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapesClass\Triangle.cpp">
+      <Filter>ShapesClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Config\Configuration.cpp">
+      <Filter>Configuration</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

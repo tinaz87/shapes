@@ -29,19 +29,19 @@ namespace collision_detection {
 	Projection projectShape2Axis(const BasePolygon* iPoly, const Vector2D& iAxis) {
 
 		const BasePolygon::points_list& pVertices = iPoly->getPointList();
-		float min = iAxis.dotProduct(pVertices.at(0));
-		float max = min;
-		for (int i = 1; i < pVertices.size(); ++i) {
-			// NOTE: the axis must be normalized to get accurate projections
+		float pMin = iAxis.dotProduct(pVertices.at(0));
+		float pMax = pMin;
+		for (size_t i = 1; i < pVertices.size(); ++i) {
+			// NOTE:sarebbe opportuno normalizzare iAxis
 			float p = iAxis.dotProduct(pVertices.at(i));
-			if (p < min) {
-				min = p;
+			if (p < pMin) {
+				pMin = p;
 			}
-			else if (p > max) {
-				max = p;
+			else if (p > pMax) {
+				pMax = p;
 			}
 		}
-		Projection proj(min, max);
+		Projection proj(pMin, pMax);
 		return proj;
 	}
 	bool detectCollision(const BasePolygon* iPoly1, const BasePolygon* iPoly2) {
@@ -50,13 +50,13 @@ namespace collision_detection {
 		{
 			PolyCircle* pCircle1 = (PolyCircle*)iPoly1;
 			PolyCircle* pCircle2 = (PolyCircle*)iPoly2;
+			const Vector2D& pCenter2 = pCircle2->getCenter();
 
-			const Vector2D& c1 = pCircle1->getCenter();
-			const Vector2D& c2 = pCircle2->getCenter();
-			const Vector2D& v = c1 - c2;
+			const Vector2D& pCenter1 = pCircle1->getCenter();
+			const Vector2D& pCenter2toCenter1 = pCenter1 - pCenter2;
 
-			if (v.Magnitude() < pCircle1->getRadius() + pCircle2->getRadius()) {
-				LogDebug("cerchi collidono mag %f ,r1 %f (%s), r2 %f (%s)", v.Magnitude(), pCircle1->getRadius(), c1.toString().c_str(), pCircle2->getRadius(), c2.toString().c_str());
+			if (pCenter2toCenter1.Magnitude() < pCircle1->getRadius() + pCircle2->getRadius()) {
+				LogDebug("cerchi collidono mag %f ,r1 %f (%s), r2 %f (%s)", pCenter2toCenter1.Magnitude(), pCircle1->getRadius(), pCenter1.toString().c_str(), pCircle2->getRadius(), pCenter2.toString().c_str());
 				return true;
 			}
 
@@ -64,9 +64,8 @@ namespace collision_detection {
 		}else {
 			const BasePolygon::points_list& pAxes1 = iPoly1->getEdgesNormal();
 			const BasePolygon::points_list& pAxes2 = iPoly2->getEdgesNormal();
-			oOverlap = FLT_MAX;
 			Vector2D pSmallest;
-			for (int i = 0; i < pAxes1.size(); ++i) {
+			for (size_t i = 0; i < pAxes1.size(); ++i) {
 				const Vector2D& axis = pAxes1[i];
 				
 				Projection p1 = projectShape2Axis(iPoly1, axis);
@@ -76,17 +75,9 @@ namespace collision_detection {
 					
 					return false;
 				}
-				else {
-					float o = p1.getOverlap(p2);
-					if (o < oOverlap)
-					{
-						oOverlap = o;
-						oMTVector = axis;
-					}
-				}
 			}
 
-			for (int i = 0; i < pAxes2.size(); ++i) {
+			for (size_t i = 0; i < pAxes2.size(); ++i) {
 				const Vector2D& axis = pAxes2[i];
 				
 				Projection p1 = projectShape2Axis(iPoly1, axis);
@@ -95,14 +86,6 @@ namespace collision_detection {
 				if (!p1.Overlap(p2)) {
 					
 					return false;
-				}
-				else {
-					float o = p1.getOverlap(p2);
-					if (o < oOverlap)
-					{
-						oOverlap = o;
-						oMTVector = axis;
-					}
 				}
 			}
 

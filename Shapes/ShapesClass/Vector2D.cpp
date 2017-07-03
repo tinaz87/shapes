@@ -6,7 +6,7 @@
 Vector2D::Vector2D():mXCoordinate(-1), mYCoordinate(-1) {}
 Vector2D::Vector2D(const float iX, const float iY) :mXCoordinate(iX), mYCoordinate(iY){}
 
-POINT Vector2D::getPoint()
+POINT Vector2D::getPoint()const
 {
 	POINT pPoint;
 	pPoint.x = this->mXCoordinate;

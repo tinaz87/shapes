@@ -7,6 +7,10 @@ PolyCircle::PolyCircle() { this->mPolygonType = CIRCLE; }
 PolyCircle::PolyCircle(const Vector2D& iCenterPoint) {
 	this->mCenter = iCenterPoint;
 	this->mPolygonType = CIRCLE;
+
+	this->mRadius = min(min(iCenterPoint.mXCoordinate, iCenterPoint.mYCoordinate), (int16_t)(Configs::MIN_WIDTH_HEIGHT + rand() % Configs::MAX_WIDTH_HEIGHT));
+
+	this->calcluateVertices();
 }
 
 PolyCircle::~PolyCircle() {}
@@ -15,8 +19,8 @@ float PolyCircle::getRadius()const {
 }
 void PolyCircle::calcluateVertices() {
 	
-	this->mTopLeft.mXCoordinate = this->mCenter.mXCoordinate - this->mRadius*this->mScale;//max(0, iCenterX - this->mRadius / 2);
-	this->mTopLeft.mYCoordinate = this->mCenter.mYCoordinate - this->mRadius*this->mScale;//max(0, iCenterY - this->mRadius / 2);
+	this->mTopLeft.mXCoordinate = this->mCenter.mXCoordinate - this->mRadius*this->mScale;
+	this->mTopLeft.mYCoordinate = this->mCenter.mYCoordinate - this->mRadius*this->mScale;
 
 	this->mBottomRight.mXCoordinate = this->mCenter.mXCoordinate + this->mRadius*this->mScale;
 	this->mBottomRight.mYCoordinate = this->mCenter.mYCoordinate + this->mRadius*this->mScale;
@@ -31,7 +35,7 @@ void PolyCircle::calcluateVertices() {
 }
 void PolyCircle::setPivotPoint(const int16_t iCenterX, const int16_t iCenterY) {
 
-	this->mRadius = min( min(iCenterX,iCenterY), (int16_t)(BasePolygon::MIN_POINT_DISTANCE + rand() % BasePolygon::MAX_POINT_DISTANCE) );
+	this->mRadius = min( min(iCenterX,iCenterY), (int16_t)(Configs::MIN_WIDTH_HEIGHT + rand() % Configs::MAX_WIDTH_HEIGHT) );
 
 	this->mCenter.mXCoordinate = iCenterX;
 	this->mCenter.mYCoordinate = iCenterY;
@@ -45,4 +49,6 @@ bool PolyCircle::Scale(float iFactor) {
 	this->mScale = iFactor;
 
 	this->calcluateVertices();
+
+	return true;
 }

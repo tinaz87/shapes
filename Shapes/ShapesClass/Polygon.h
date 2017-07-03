@@ -7,7 +7,7 @@ class BasePolygon
 {
 public:
 
-	enum POLYGON_TYPE{NONE=0,RECTANGLE=1,CIRCLE=2,TRIANGLE=3,POLYGON_COUNT=2};
+	enum POLYGON_TYPE{NONE=0,RECTANGLE=1,CIRCLE=2,TRIANGLE=3,POLYGON_COUNT=3};
 	typedef std::vector<Vector2D> points_list;
 	
 	BasePolygon();
@@ -19,17 +19,17 @@ public:
 	const Vector2D& getBottomRight()const;
 	const Vector2D& getCenter()const;
 	const Color& getColor()const;
+
+	/*
+	* Calculate edges normal
+	* If we want to recalculate normals  iRecalc must be set TRUE
+	*/
 	const points_list& getEdgesNormal(bool iRecalc = false)const ;
 	virtual bool Scale(float iFactor) = 0;
 
 protected:
 
 	void addPoint(const Vector2D& iPoint);
-	
-
-	static const int16_t MAX_POINT_DISTANCE = 80;
-	static const int16_t MIN_POINT_DISTANCE = 20;
-
 
 	mutable points_list mEdgesNormal;
 	points_list mPointList;

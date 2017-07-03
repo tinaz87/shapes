@@ -10,6 +10,7 @@ public:
 	void addPoly(BasePolygon* iPoly);
 	void setWidth(int16_t iWidth);
 	void setHeight(int16_t iHeight);
+	void cleanField();
 	const std::vector<BasePolygon*>& getPolyList()const;
 private:
 	std::vector<BasePolygon*> mPolyList;
